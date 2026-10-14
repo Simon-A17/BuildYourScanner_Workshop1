@@ -1,20 +1,28 @@
-from recon import run_recon
 from analysis import analyse_results
+from recon import run_recon
 from report import generate_report
 
 
 def main():
-    # TODO: Get the target from the user.
+    target = input("Enter the target IP or hostname to scan: ").strip()
 
-    # TODO: Create the shared results dictionary.
-    # It should contain:
-    # target, ports, services
+    if not target:
+        target = "127.0.0.1"
 
-    # TODO: Pass results through the reconnaissance stage.
+    results = {"target": target, "ports": [], "services": []}
 
-    # TODO: Pass results through the analysis stage.
+    print(f"\n[*] Starting reconnaissance on {target}...")
 
-    # TODO: Generate the final report.
+    # Safe call - uses default range 1 to 1024
+    results = run_recon(target, results)
+
+    print("[*] Recon complete. Analyzing discovered ports...")
+
+    results = analyse_results(results)
+
+    print("[*] Analysis complete. Generating report...\n")
+
+    generate_report(results)
 
 
 if __name__ == "__main__":
